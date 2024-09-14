@@ -7,19 +7,19 @@ import vn.iostar.configs.DBConnectSQLServer;
 import vn.iostar.dao.IUserDao;
 import vn.iostar.models.UserModel;
 
-public class UserDaoimpl implements IUserDao{
+public class UserDaoimpl implements IUserDao {
 	public Connection conn = null;
 	public PreparedStatement ps = null;
 	public ResultSet rs = null;
-	
+
 	public UserModel findByUserName(String username) {
 		String sql = "SELECT * FROM [user] WHERE username = ? ";
-		try {	
+		try {
 			conn = new DBConnectSQLServer().getConnection();
 			ps = conn.prepareStatement(sql);
 			ps.setString(1, username);
 			rs = ps.executeQuery();
-			
+
 			while (rs.next()) {
 				UserModel user = new UserModel();
 				user.setId(rs.getInt("id"));
@@ -27,12 +27,12 @@ public class UserDaoimpl implements IUserDao{
 				user.setUsername(rs.getString("username"));
 				user.setFullname(rs.getString("fullname"));
 				user.setPassword(rs.getString("password"));
-				user.setImages(rs.getString("images"));				
+				user.setImages(rs.getString("images"));
 				user.setPhone(rs.getString("phone"));
 				user.setCreatedate(rs.getDate("createdate"));
 				user.setRoleid(Integer.parseInt(rs.getString("roleid")));
 				return user;
-		}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -47,23 +47,23 @@ public class UserDaoimpl implements IUserDao{
 
 	@Override
 	public void insert(UserModel user) {
-		String sql = "INSERT INTO [user](id, email, username, fullname, password, images, phone,createdate, roleid) VALUES (?,?,?,?,?,?,?,?,?)";
+		String sql = "INSERT INTO [user](email, username, fullname, password, images, phone,createdate, roleid) VALUES (?,?,?,?,?,?,?,?)";
 		try {
 			conn = new DBConnectSQLServer().getConnection();
 			ps = conn.prepareStatement(sql);
-			ps.setInt(1, user.getId());
-			ps.setString(2,user.getEmail());
-			ps.setString(3,user.getUsername());
-			ps.setString(4,user.getFullname());
-			ps.setString(5,user.getPassword());
-			ps.setString(6,user.getImages());
-			ps.setString(7,user.getPhone());
-			ps.setDate(8,user.getCreatedate());
-			ps.setInt(9,user.getRoleid());
+
+			ps.setString(1, user.getEmail());
+			ps.setString(2, user.getUsername());
+			ps.setString(3, user.getFullname());
+			ps.setString(4, user.getPassword());
+			ps.setString(5, user.getImages());
+			ps.setString(6, user.getPhone());
+			ps.setDate(7, user.getCreatedate());
+			ps.setInt(8, user.getRoleid());
 			ps.executeUpdate();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -80,7 +80,8 @@ public class UserDaoimpl implements IUserDao{
 			}
 			ps.close();
 			conn.close();
-		} catch (Exception ex) {}
+		} catch (Exception ex) {
+		}
 		return duplicate;
 	}
 
@@ -97,7 +98,8 @@ public class UserDaoimpl implements IUserDao{
 			}
 			ps.close();
 			conn.close();
-		} catch (Exception ex) {}
+		} catch (Exception ex) {
+		}
 		return duplicate;
 	}
 
@@ -115,9 +117,24 @@ public class UserDaoimpl implements IUserDao{
 			}
 			ps.close();
 			conn.close();
-		} catch (Exception ex) {}
+		} catch (Exception ex) {
+		}
 		return duplicate;
 	}
 
+	@Override
+	public void changePassword(String username, String password) {
+		String query = "update [user] set password=? where username=?";
+		try {
+			conn = new DBConnectSQLServer().getConnection();
+			ps = conn.prepareStatement(query);
+			ps.setString(1,password);
+			ps.setString(2,username);
+			ps.executeQuery();
+			ps.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}			
+	}
 }
-	

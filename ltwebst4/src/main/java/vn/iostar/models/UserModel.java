@@ -36,6 +36,18 @@ public class UserModel implements Serializable{
 	}
 
 
+	public UserModel(String email, String username, String fullname, String password,String images, String phone, Date createdate, int roleid) {
+		super();
+		this.email = email;
+		this.username = username;
+		this.fullname = fullname;
+		this.password = password;
+		this.images = images;
+		this.phone = phone;
+		this.createdate = createdate;
+		this.roleid = roleid;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -106,8 +118,6 @@ public class UserModel implements Serializable{
 	
 	public void setCreatedate(Date createdate) {
 		this.createdate = createdate;
-	}
-
-	
+	}	
 	
 }

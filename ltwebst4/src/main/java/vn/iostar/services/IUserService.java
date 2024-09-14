@@ -1,4 +1,4 @@
-package vn.iostar.dao;
+package vn.iostar.services;
 
 import vn.iostar.models.UserModel;
 
@@ -12,4 +12,5 @@ public interface IUserService {
 	boolean checkExistEmail(String email);
 	boolean checkExistUsername(String username);
 	boolean checkExistPhone(String phone);
+	void changePassword(String username, String password);
 }

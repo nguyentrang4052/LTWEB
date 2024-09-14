@@ -1,11 +1,13 @@
-package vn.iostar.dao.impl;
+package vn.iostar.services.impl;
 
-import vn.iostar.dao.IUserDao;
-import vn.iostar.dao.IUserService;
 import vn.iostar.models.UserModel;
+import vn.iostar.services.IUserService;
+import vn.iostar.dao.IUserDao;
+import vn.iostar.dao.impl.UserDaoimpl;
 
 public class UserServiceimpl implements IUserService{
 	IUserDao userDao = new UserDaoimpl();
+
 	@Override
 	public UserModel login(String username, String password) {
 		UserModel user = this.findByUserName(username);
@@ -28,7 +30,7 @@ public class UserServiceimpl implements IUserService{
 
 	@Override
 	public void insert(UserModel user) {
-		userDao.insert(user);		
+		userDao.insert(user);	
 	}
 
 	@Override
@@ -38,7 +40,7 @@ public class UserServiceimpl implements IUserService{
 		}
 		long millis = System.currentTimeMillis();
 		java.sql.Date date = new java.sql.Date(millis);
-		userDao.insert(new UserModel(0,email,username,fullname,password,null,phone,date, 5));
+		userDao.insert(new UserModel(email,username,fullname,password,null,phone,date,1));
 		return true;
 	}
 
@@ -56,6 +58,10 @@ public class UserServiceimpl implements IUserService{
 	public boolean checkExistPhone(String phone) {
 		return userDao.checkExistPhone(phone);
 	}
-	
-	
+
+	@Override
+	public void changePassword(String username, String password) {
+		userDao.changePassword(username, password);		
+	}
+
 }
